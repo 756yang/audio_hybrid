@@ -1,0 +1,27 @@
+功能测试：
+一、faac:takc混合编码 44100Hz 16b 2ch
+LACA-5713_utf8.cue LACA-5713.flac -> [wav] %album%/%title% [no]
+多个文件CRC32校检：BCF7AB2A
+1、混合编码，生成多音轨文件：
+LACA-5713_utf8.cue LACA-5713.flac -> "CIRCUS - 初音島ベスト D.C.～ダ･カーポ～ベストセレクション.m4a" "CIRCUS - 初音島ベスト D.C.～ダ･カーポ～ベストセレクション.tak" [tag]
+-> [wav] %album% cue/%title% [no] 多个文件CRC32校检：BCF7AB2A
+2、混合编码，生成单文件：
+LACA-5713.flac -> LACA-5713.m4a LACA-5713.tak [no]
++ cue -> [wav] %album% m4a/%title% [no] 多个文件CRC32校检：BCF7AB2A
+
+二、qaac:takc混合编码 48000Hz 16b 2ch
+BGM02A.wav -> reBGM02A.wav [no] CRC32校检：3E349033
+混合编码失败，因为用sfaad解码qaac编码的音频会出现相位偏移
+同样，fhgaac:takc混合编码等也是失败的，这得让sfaad能正确解码才行。
+
+三、faac:takc混合编码 96000Hz 16b 2ch
+"28. サウンドスケープ (TRUE & Wind Orchestra Ver.).flac" ->
+"28. サウンドスケープ (TRUE & Wind Orchestra Ver.).wav" CRC32校检：2CA43297
+-> "28. サウンドスケープ (TRUE & Wind Orchestra Ver.).m4a" +tak
+-> "サウンドスケープ (TRUE & Wind Orchestra Ver.).wav" CRC32校检：2CA43297
+
+综上所述，使用faac编码配合sfaad解码的混合编码方式是正确无误的。
+
+相关资源：
+链接：https://pan.baidu.com/s/1rmA7PXlXCqiuat7iqS4I9A 
+提取码：e2pn
