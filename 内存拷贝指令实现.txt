@@ -1,0 +1,36 @@
+#define TEST_TIMES 8
+
+#define PREFETCH 1
+#define CACHELINE 128
+#define USE_MOVNT 1
+averge cost 3414082880.375000
+
+#define PREFETCH 1
+#define CACHELINE 128
+#define USE_MOVNT 0
+averge cost 3936806296.750000
+
+#define PREFETCH 0
+#define CACHELINE 128
+#define USE_MOVNT 1
+averge cost 3376709681.125000
+v2 averge cost 3379220276.250000,averge cost 3368867067.500000
+
+#define PREFETCH 0
+#define CACHELINE 64
+#define USE_MOVNT 1
+averge cost 3373645265.750000
+
+#define PREFETCH 0
+#define CACHELINE 32
+#define USE_MOVNT 1
+averge cost 3396940169.500000
+
+结论，如果是连续读取大量数据，不应该用prefetch系列指令（CPU自带预读机制会使之失效），一次读取的数据量最好是一个缓存行（不应该超过），连续写入大量数据，应该用movnt系列指令，以写联合方式写入。另外，一次循环的代码量不宜太大，应在一个缓存行之内以提高循环效率。而一次读取的数据量大小在缓存行大小左右即可，这并不会对执行效率有很大影响。大部分CPU的缓存行是32,64,128,256字节的，而以64,128字节的居多，x86 CPU使用64字节的缓存行居多，x64 CPU使用128字节缓存行居多。实测，即使是128字节缓存行的x64 CPU以一次64字节地读取，也和一次128字节地读取差异几乎可忽略。所以，一次读取地字节数应该为64，如果是内存拷贝，应该用movnt系列指令。
+
+其实，连续内存拷贝应该反向拷贝，以避免硬件预读机制使prefetchnta失效，可以避免缓存污染。
+
+AVX2 cost 3358282560.5,3328096665.25,3338318373.375
+SSE2 cost 3326115617.875,3299868246.75,3316729689.25
+NO_SIMD = 4874075148(FPU),3345931439(SSE2)
+可见有些计算机的并行处理能力不强，SIMD的效果并不是很好，比如一些笔记本电脑，SSE2的实现是效率最高的，而AVX指令可能是拆分为两个类似SSE指令（微码）的结果。（X86程序只能malloc得到1G左右内存）。

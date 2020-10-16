@@ -1,0 +1,26 @@
+faac -q 500 -c 24000 --no-tns --joint 0 --pns 0 --mpeg-vers 2 -o C:\Users\yang\Documents\Adobe\BGM31.m4a C:\Users\yang\Documents\Adobe\BGM31.wav
+faad -b 4 -o C:\Users\yang\Documents\Adobe\reBGM31.wav C:\Users\yang\Documents\Adobe\BGM31.m4a
+
+ffmpeg -i C:\Users\yang\Documents\Adobe\BGM31.m4a -f wav C:\Users\yang\Documents\Adobe\reBGM31.wav
+ffmpeg -i C:\Users\yang\Documents\Adobe\BGM31.m4a -f wav C:\Users\yang\Documents\Adobe\reBGM32.wav
+
+falabaac -i C:\Users\yang\Documents\Adobe\BGM31.wav -q 1.5 -w 24 -o C:\Users\yang\Documents\Adobe\BGM31.m4a
+qaac --tvbr 110 -q 2 --no-dither -o C:\Users\yang\Documents\Adobe\BGM31.m4a C:\Users\yang\Documents\Adobe\BGM31.wav
+fdkaac -m 5 -w 24000 -o C:\Users\yang\Documents\Adobe\BGM31.m4a C:\Users\yang\Documents\Adobe\BGM31.wav
+lame -V 0 C:\Users\yang\Documents\Adobe\BGM31.wav C:\Users\yang\Documents\Adobe\BGM31.mp3
+neroaacenc -q 0.8 -if C:\Users\yang\Documents\Adobe\BGM31.wav -of C:\Users\yang\Documents\Adobe\BGM31.m4a
+oggenc2 -q 10 -o C:\Users\yang\Documents\Adobe\BGM31.ogg C:\Users\yang\Documents\Adobe\BGM31.wav
+opusenc --bitrate 256 --vbr --music C:\Users\yang\Documents\Adobe\BGM31.wav C:\Users\yang\Documents\Adobe\BGM31.opus
+wmaencode C:\Users\yang\Documents\Adobe\BGM31.wav C:\Users\yang\Documents\Adobe\BGM31.wma -q 98 -c pro
+wavpack -b256 -c C:\Users\yang\Documents\Adobe\BGM31.wav C:\Users\yang\Documents\Adobe\BGM31.wv
+"C:\Program Files (x86)\foobar2000\encoders\FHGAAC\fhgaacenc" --vbr 6 C:\Users\yang\Documents\Adobe\BGM31.wav C:\Users\yang\Documents\Adobe\BGM31.m4a
+
+事实证明，不同编码器编码结果不一，且不同解码器对同一音频解码结果也不一样。而且，可能同一解码器对同一音频解码的结果每次都不一样。注意，MPEG-4 AAC中包含PNS（知觉噪音代替）技术，制造噪音是用一种随机数生成的。
+
+编码：V:\test\test.wav V:\test.m4a -e faac -q 500 -c $f$ -o $d$ $s$ -ahc_ep takc -e -pMax $m$ $d:~0,-3$tak -ahc_ep faad -b 4 -o $n$ $d$ -ahc_ep V:\
+解码：V:\test.m4a V:\retest.wav -d faad -b 4 -o $n$ $s$ -ahc_ep takc -d $s:~0,-3$tak $m$ -ahc_ep V:\
+mv V:\test.tak V:\test\test.tak
+生成纠错文件1：V:\test.m4a V:\test.tak -c takc -e -pMax $n$ $d$ -ahc_ep "-s1.wav V:\test" -- faad -b 4 -o $m$ $s$ -ahc_ep V:\
+rm V:\test.tak
+生成纠错文件2：V:\test\test.wav V:\test.tak -C takc -e -pMax $n$ $d$ -ahc_ep "-s1.m4a V:\\" -- faad -b 4 -o $m$ $sd$ -ahc_ep V:\
+或者：V:\test\test.wav V:\test.tak -C takc -e -pMax $n$ $d$ -ahc_ep -- faad -b 4 -o $m$ $d:~0,-3$m4a -ahc_ep V:\
