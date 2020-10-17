@@ -6,6 +6,8 @@
 https://github.com/756yang/sfaad
 https://github.com/756yang/foobar2000_input_hybrid_and_sfaad
 
+TODO: sfaad should read mp4 audio correctly!
+
 有损无损混合编解码器，简称混合编解码器。
 
 命令行格式：
