@@ -3,62 +3,108 @@
 # lossy and lossless codec for audio, simplly name as ahc.
 
 关联仓库：
+
 https://github.com/756yang/sfaad
+
 https://github.com/756yang/foobar2000_input_hybrid_and_sfaad
-
+<br/></br>
+<br/></br>
 TODO: sfaad should read mp4 audio correctly!
-
+<br/></br>
+<br/></br>
 有损无损混合编解码器，简称混合编解码器。
 
 命令行格式：
-帮助：ahc {[--help]|[-h]}
+
+帮助：ahc \{\[--help\]|\[-h\]\}
+
 外包编解码：ahc %s %d -w codec_params
-编码：ahc %s %d -e -p<n> main_params [-ahc_ep] -p<n> ext_params [-ahc_ep] [ -p<n> main_decode_params [-ahc_ep] ] filepath
-解码：ahc %s %d -d {2|[ -p<n> main_params [-ahc_ep] ] [ -p<n> ext_params [-ahc_ep] ] [--] [--src2]} filepath
-生成纠错文件1：ahc %s %d -c -p<n> ext_params [-ahc_ep] ["-s<n>.ext path"] {2|[ -p<n> wav_decode_params [-ahc_ep] ] [ -p<n> main_decode_params [-ahc_ep] ] [--[src1]] [--]} filepath
-生成纠错文件2：ahc %s %d -C -p<n> ext_params [-ahc_ep] ["-s<n>.ext path"] {2|[ -p<n> wav_decode_params [-ahc_ep] ] [ -p<n> main_decode_params [-ahc_ep] ] [--] [--[src2]]} filepath
+
+编码：ahc %s %d -e -p\<n\> main_params \[-ahc_ep\] -p\<n\> ext_params \[-ahc_ep\] \[ -p\<n\> main_decode_params \[-ahc_ep\] \] filepath
+
+解码：ahc %s %d -d \{2|\[ -p\<n\> main_params \[-ahc_ep\] \] \[ -p\<n\> ext_params \[-ahc_ep\] \] \[--\] \[--src2\]\} filepath
+
+生成纠错文件1：ahc %s %d -c -p\<n\> ext_params \[-ahc_ep\] \["-s\<n\>.ext path"\] \{2|\[ -p\<n\> wav_decode_params \[-ahc_ep\] \] \[ -p\<n\> main_decode_params \[-ahc_ep\] \] \[--\[src1\]\] \[--\]\} filepath
+
+生成纠错文件2：ahc %s %d -C -p\<n\> ext_params \[-ahc_ep\] \["-s\<n\>.ext path"\] \{2|\[ -p\<n\> wav_decode_params \[-ahc_ep\] \] \[ -p\<n\> main_decode_params \[-ahc_ep\] \] \[--\] \[--\[src2\]\]\} filepath
+
 %s 输入文件名（不可作为变量使用）
+
 %d 输出文件名（不可作为变量使用）
+
 $s$ 输入文件名
+
 $d$ 输出文件名
-$sd$ 用于生成纠错文件的变量，是输入文件对应的无损/有损文件名，值为"-s<n>.ext path"
+
+$sd$ 用于生成纠错文件的变量，是输入文件对应的无损/有损文件名，值为"-s\<n\>.ext path"
+
 $c$ 声道数
+
 $f$ 频率带宽
+
 $r$ 采样率
+
 $t$ 位深
+
 $n$ 临时文件名（包括filepath）
+
 $m$ 临时文件名（包括filepath）
+<br/></br>
+<br/></br>
+-p\<n\> 可选选项，n代表main_params等的参数个数，"-p\<n\>"可为："-p4"
 
--p<n> 可选选项，n代表main_params等的参数个数，"-p<n>"可为："-p4"
-[-ahc_ep] 可选选项，与"-p<n>"必择其一，用来分隔main_params、ext_params等编解码参数
+\[-ahc_ep\] 可选选项，与"-p\<n\>"必择其一，用来分隔main_params、ext_params等编解码参数
+
 codec_params 编解码器参数
-main_params 主编码器参数
-ext_params 扩展编码器参数
-main_decode_params 主解码器参数
-wav_decode_params 无损音频解码参数
-filepath 缓存文件路径
-%s %d 是foobar2000转换器设置的字符串
-$d:~0,-3$ext 是得到替换%d的後缀（为3个字符）的字符串
-$s$ $d$ $sd$ $c$ $f$ $r$ $t$ $n$ $m$是本编解码器内置变量（不带引号）
 
+main_params 主编码器参数
+
+ext_params 扩展编码器参数
+
+main_decode_params 主解码器参数
+
+wav_decode_params 无损音频解码参数
+
+filepath 缓存文件路径
+
+%s %d 是foobar2000转换器设置的字符串
+
+$d:~0,-3$ext 是得到替换%d的後缀（为3个字符）的字符串
+
+$s$ $d$ $sd$ $c$ $f$ $r$ $t$ $n$ $m$是本编解码器内置变量（不带引号）
+<br/></br>
+<br/></br>
 注：编解码器参数，第一个是编解码器名，解析後不带引号，其他则为编解码器传参，解析後带引号。
 
-以[]括起来的是可选选项，而用{}括起来的是可选参数组，要求从中选用指定的可选参数数量，如：{1|[src1] [src2]}，表示从src1,src2中选用一个，这也可以写为{[src1]|[src2]}
+以\[\]括起来的是可选选项，而用\{\}括起来的是可选参数组，要求从中选用指定的可选参数数量，如：\{1|\[src1\] \[src2\]\}，表示从src1,src2中选用一个，这也可以写为\{\[src1\]|\[src2\]\}
 
-"-s<n>.ext path" 参数是专为解决生成纠错文件中可能存在无损音频路径与有损音频不一样，通过替换有损/无损音频目录和後缀的方式来得到对应另一音频路径，n为$s$中保留的路径层数，path为替换的目录，ext为替换的後缀。
-
+"-s\<n\>.ext path" 参数是专为解决生成纠错文件中可能存在无损音频路径与有损音频不一样，通过替换有损/无损音频目录和後缀的方式来得到对应另一音频路径，n为$s$中保留的路径层数，path为替换的目录，ext为替换的後缀。
+<br/></br>
+<br/></br>
 编码步骤：
+
 wav输入，经主编码器得到有损音频。原wav音频与有损音频解码後的音频相减得到纠错音频存放到filepath，经扩展编码器得到无损音频。
+
 解码步骤：
+
 主音频输入，解码文件存放到filepath，扩展音频解码存放到filepath，两者相加，输出到%d即可。
+
 生成纠错文件步骤：
+
 主解码器解码得到wav或从文件中得到（已被调用方解码），再解码无损音频或从文件中得到（已被调用方解码），两者相差得到纠错音频，经扩展编码器得到纠错文件。
-
+<br/></br>
+<br/></br>
 几种参数设置：（建议创建一个2~4G大小的内存盘，作为filepath）
-faac外包编码：%s %d -w faac -q 500 -c $f$ -o $d$ $s$
-faac:takc编码：%s %d -e faac -q 500 -c $f$ -o $d$ $s$ -ahc_ep takc -e -pMax $m$ $d:~0,-3$tak -ahc_ep sfaad $d$ $n$ -ahc_ep V:\
-sfaad:takc解码：%s %d -d sfaad $s$ $n$ -ahc_ep takc -d $s:~0,-3$tak $m$ -ahc_ep V:\
-sfaad:takc[:ffmpeg]生成纠错文件1：%s %d -c takc -e -pMax $n$ $d$ -ahc_ep "-s1.flac C:\\" -- sfaad $s$ $m$ -ahc_ep V:\
-sfaad:takc[:ffmpeg]生成纠错文件2：%s %d -C takc -e -pMax $n$ $d$ -ahc_ep -- sfaad $d:~0,-3$m4a $m$ -ahc_ep V:\
 
-注意：命令行参数中（只有'\"'和'\'是特殊字符，其他不变），以空格分开多个参数，如果参数中包含空格请用英文双引号括起来。如果英文双引号括起来的最後一个字符是'\'，请用'\\'代替之。'\'的作用是在参数中转义英文双引号，而'\\'的作用是使其後的英文双引号不被转义。
+faac外包编码：%s %d -w faac -q 500 -c $f$ -o $d$ $s$
+
+faac:takc编码：%s %d -e faac -q 500 -c $f$ -o $d$ $s$ -ahc_ep takc -e -pMax $m$ $d:~0,-3$tak -ahc_ep sfaad $d$ $n$ -ahc_ep V:\\
+
+sfaad:takc解码：%s %d -d sfaad $s$ $n$ -ahc_ep takc -d $s:~0,-3$tak $m$ -ahc_ep V:\\
+
+sfaad:takc\[:ffmpeg\]生成纠错文件1：%s %d -c takc -e -pMax $n$ $d$ -ahc_ep "-s1.flac C:\\\\" -- sfaad $s$ $m$ -ahc_ep V:\\
+
+sfaad:takc\[:ffmpeg\]生成纠错文件2：%s %d -C takc -e -pMax $n$ $d$ -ahc_ep -- sfaad $d:~0,-3$m4a $m$ -ahc_ep V:\\
+<br/></br>
+<br/></br>
+注意：命令行参数中（只有'\\"'和'\\'是特殊字符，其他不变），以空格分开多个参数，如果参数中包含空格请用英文双引号括起来。如果英文双引号括起来的最後一个字符是'\\'，请用'\\\\'代替之。'\\'的作用是在参数中转义英文双引号，而'\\\\'的作用是使其後的英文双引号不被转义。
